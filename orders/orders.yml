@@ -16,10 +16,10 @@ spec:
     spec:
       containers:
       - name: orders
-        image: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orders-service:latest
+        image: 905418202149.dkr.ecr.us-east-1.amazonaws.com/orders-service
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000   # change if your Node app uses a different port
+        - containerPort: 80  # change if your Node app uses a different port
 ---
 apiVersion: v1
 kind: Service
@@ -33,4 +33,4 @@ spec:
     app: orders
   ports:
   - port: 80        # service port inside the cluster
-    targetPort: 3000  # must match the containerPort above
+    targetPort: 80  # must match the containerPort above
