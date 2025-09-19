@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 905418202149.dkr.ecr.us-east-1.amazonaws.com/frontend-service
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80   # change if your frontend app uses a different port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  type: LoadBalancer   # for external access; use ClusterIP if only internal
+  selector:
+    app: frontend
+  ports:
+  - port: 80           # service port (cluster / external)
+    targetPort: 80   # container port
