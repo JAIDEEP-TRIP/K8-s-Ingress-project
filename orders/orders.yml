@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+      - name: orders
+        image: <ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/orders-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000   # change if your Node app uses a different port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  type: ClusterIP
+  selector:
+    app: orders
+  ports:
+  - port: 80        # service port inside the cluster
+    targetPort: 3000  # must match the containerPort above
